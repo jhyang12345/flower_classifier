@@ -25,16 +25,17 @@ class Classifier:
 
         x = Conv2D(filters=512, kernel_size=4, padding='same', activation='relu')(x)
         x = Conv2D(filters=512, kernel_size=4, padding='same', activation='relu')(x)
+        x = MaxPooling2D(pool_size=(2, 2))(x)
         x = BatchNormalization()(x)
 
-        x = Dropout(0.2)(x)
+        # x = Dropout(0.2)(x)
 
-        x = Conv2D(filters=512, kernel_size=4, padding='same', activation='relu')(x)
-        x = Conv2D(filters=512, kernel_size=4, padding='same', activation='relu')(x)
-        x = GlobalAveragePooling2D()(x)
-        x = BatchNormalization()(x)
+        # x = Conv2D(filters=512, kernel_size=4, padding='same', activation='relu')(x)
+        # x = Conv2D(filters=512, kernel_size=4, padding='same', activation='relu')(x)
+        # x = GlobalAveragePooling2D()(x)
+        # x = BatchNormalization()(x)
 
-        # x = Flatten()(x)
+        x = Flatten()(x)
         logits = Dense(self.classes)(x)
         predictions = Activation("softmax")(logits)
 
