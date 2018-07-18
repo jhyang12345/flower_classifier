@@ -7,7 +7,7 @@ import numpy as np
 import random
 
 data_dir = "flowers"
-min_image_size = 128
+min_image_size = 224
 
 def get_train_test_sets(input_array, flower_targets):
     data_size = input_array.shape[0]

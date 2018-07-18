@@ -8,7 +8,7 @@ import numpy as np
 
 class Classifier:
     def __init__(self):
-        self.image_size = 128
+        self.image_size = 224
         self.channels = 3
         self.classes = 5
         self.model = self.build_model()
