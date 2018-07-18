@@ -35,8 +35,16 @@ def files_to_array(flower_files):
     ret = np.asarray(ret, dtype=np.float32)
     return ret
 
+def fetch_training_data():
+    flower_files, flower_targets = load_dataset(data_dir)
+    input_array = files_to_array(flower_files)
+    training_data, training_output, testing_data, testing_output = \
+            get_train_test_sets(input_array, flower_targets)
+    return training_data, training_output, testing_data, testing_output
+
 if __name__ == '__main__':
     flower_files, flower_targets = load_dataset(data_dir)
     input_array = files_to_array(flower_files)
-    training_data, training_output, testing_data, testing_output = get_train_test_sets(input_array, flower_targets)
+    training_data, training_output, testing_data, testing_output = \
+            get_train_test_sets(input_array, flower_targets)
     print(training_data.shape, testing_data.shape)

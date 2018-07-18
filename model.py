@@ -23,17 +23,18 @@ class Classifier:
 
         x = model.output
 
-        x = Conv2D(filters=1024, kernel_size=4, padding='same', activation='relu')(x)
-        x = Conv2D(filters=1024, kernel_size=4, padding='same', activation='relu')(x)
+        x = Conv2D(filters=512, kernel_size=4, padding='same', activation='relu')(x)
+        x = Conv2D(filters=512, kernel_size=4, padding='same', activation='relu')(x)
         x = BatchNormalization()(x)
 
         x = Dropout(0.2)(x)
 
-        x = Conv2D(filters=1024, kernel_size=4, padding='same', activation='relu')(x)
-        x = Conv2D(filters=1024, kernel_size=4, padding='same', activation='relu')(x)
+        x = Conv2D(filters=512, kernel_size=4, padding='same', activation='relu')(x)
+        x = Conv2D(filters=512, kernel_size=4, padding='same', activation='relu')(x)
+        x = GlobalAveragePooling2D()(x)
         x = BatchNormalization()(x)
 
-        x = Flatten()(x)
+        # x = Flatten()(x)
         logits = Dense(self.classes)(x)
         predictions = Activation("softmax")(logits)
 
