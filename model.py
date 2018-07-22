@@ -1,7 +1,8 @@
 from keras.applications.vgg19 import VGG19
+from keras.applications.resnet50 import ResNet50
 from keras import optimizers
 from keras.models import Sequential, Model
-from keras.layers import Input, Dropout, Flatten, Dense, GlobalAveragePooling2D, Conv2D, MaxPooling2D, BatchNormalization, Activation
+from keras.layers import Input, Dropout, Flatten, Dense, GlobalAveragePooling2D, Conv2D, MaxPooling2D, BatchNormalization, Activation, AveragePooling2D
 from keras.callbacks import ModelCheckpoint
 import numpy as np
 
@@ -23,12 +24,24 @@ class Classifier:
 
         x = model.output
 
-        x = Conv2D(filters=512, kernel_size=4, padding='same', activation='relu')(x)
-        x = Conv2D(filters=512, kernel_size=4, padding='same', activation='relu')(x)
+        # x = Flatten()(x)
+        # x = Dense(256, activation='relu')(x)
+        # x = Dropout(0.3)(x)
+        # x = Dense(256, activation='relu')(x)
+
+        x = Conv2D(filters=1024, kernel_size=4, padding='same', activation='relu')(x)
+        # x = Conv2D(filters=512, kernel_size=4, padding='same', activation='relu')(x)
         x = MaxPooling2D(pool_size=(2, 2))(x)
         x = BatchNormalization()(x)
+        #
+        x = Dropout(0.5)(x)
 
-        # x = Dropout(0.2)(x)
+        x = Conv2D(filters=1024, kernel_size=4, padding='same', activation='relu')(x)
+        # x = Conv2D(filters=512, kernel_size=4, padding='same', activation='relu')(x)
+        x = MaxPooling2D(pool_size=(2, 2))(x)
+        x = BatchNormalization()(x)
+        #
+        x = Dropout(0.5)(x)
 
         # x = Conv2D(filters=512, kernel_size=4, padding='same', activation='relu')(x)
         # x = Conv2D(filters=512, kernel_size=4, padding='same', activation='relu')(x)
@@ -36,6 +49,7 @@ class Classifier:
         # x = BatchNormalization()(x)
 
         x = Flatten()(x)
+        x = Dense(256, activation='relu')(x)
         logits = Dense(self.classes)(x)
         predictions = Activation("softmax")(logits)
 
@@ -43,7 +57,7 @@ class Classifier:
         model_output = model(c_input)
         model.summary()
 
-        model.compile(loss='categorical_crossentropy', optimizer='rmsprop',
+        model.compile(loss='categorical_crossentropy', optimizer='adam',
                     metrics=['accuracy'])
 
         return model
